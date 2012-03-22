@@ -1,0 +1,7 @@
+<snippet>
+  <content>
+    <![CDATA[render :text => "<pre>#{${1:params}}</pre>"
+return]]>
+  </content>
+  <tabTrigger>pre</tabTrigger>
+</snippet>
