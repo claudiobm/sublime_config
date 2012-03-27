@@ -1,0 +1,4 @@
+{
+	"last_test_file": "contact_import_spec.rb",
+	"last_test_run": "cd /Users/claudio/web_rails/emailmarketing3-0/ && sublime_rspec.rb spec/models/contact_import_spec.rb -l 24"
+}

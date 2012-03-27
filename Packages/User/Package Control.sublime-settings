@@ -1,0 +1,14 @@
+{
+	"auto_upgrade_last_run": 1332785230,
+	"installed_packages":
+	[
+		"FileTemplates",
+		"Package Control",
+		"RubyTest"
+	],
+	"repository_channels":
+	[
+		"https://sublime.wbond.net/repositories.json",
+		"git://github.com/mneuhaus/SublimeFileTemplates.git"
+	]
+}

@@ -1,0 +1,23 @@
+[
+	{
+		"args":
+		{
+			"characters": "params"
+		},
+		"command": "insert"
+	},
+	{
+		"args":
+		{
+			"contents": "[$0]"
+		},
+		"command": "insert_snippet"
+	},
+	{
+		"args":
+		{
+			"characters": ":"
+		},
+		"command": "insert"
+	}
+]

@@ -1,3 +1,5 @@
 Settings/Auto Save Session.sublime_session
 .DS_Store
 Settings/*.sublime_session
+**.pyc
+**.cache
