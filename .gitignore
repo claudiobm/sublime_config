@@ -3,3 +3,5 @@ Settings/Auto Save Session.sublime_session
 Settings/*.sublime_session
 **.pyc
 **.cache
+*.git
+Backup

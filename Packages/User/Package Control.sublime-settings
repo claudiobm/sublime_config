@@ -1,10 +1,13 @@
 {
-	"auto_upgrade_last_run": 1332785230,
+	"auto_upgrade_last_run": 1334923333,
 	"installed_packages":
 	[
+		"CoffeeScript",
+		"CSV",
 		"FileTemplates",
 		"Package Control",
-		"RubyTest"
+		"RubyTest",
+		"SideBarEnhancements"
 	],
 	"repository_channels":
 	[
