@@ -1,13 +1,15 @@
 {
-	"auto_upgrade_last_run": 1334923333,
+	"auto_upgrade_last_run": 1340106925,
 	"installed_packages":
 	[
 		"CoffeeScript",
 		"CSV",
 		"FileTemplates",
 		"Package Control",
+		"Rails Related Files",
 		"RubyTest",
-		"SideBarEnhancements"
+		"SideBarEnhancements",
+		"Simple Rails Navigator"
 	],
 	"repository_channels":
 	[

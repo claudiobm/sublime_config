@@ -18,7 +18,7 @@ Go to your Sublime Text 2 `Packages` directory
 
  - OS X: `~/Library/Application\ Support/Sublime\ Text\ 2/Packages`
  - Windows: `%APPDATA%/Sublime Text 2/Packages/`
- - Linux: `~/.Sublime\ Text\ 2/Packages/`
+ - Linux: `~/.config/sublime-text-2/Packages/`
 
 and clone the repository using the command below:
 
@@ -37,11 +37,16 @@ Bundler support:
 ------------
 First be sure that you have your copy of `RubyTest.sublime-settings` placed in User folder (refer to Settings above) and fill it  with below code:
 
-    "erb_exec": "bundle exec erb",
-    "ruby_unit_exec": "bundle exec ruby",
-    "ruby_cucumber_exec": "bundle exec cucumber -f pretty",
-    "ruby_rspec_exec": "bundle exec rspec",
+    {
+      "erb_exec": "bundle exec erb",
+      "ruby_unit_exec": "bundle exec ruby",
+      "ruby_cucumber_exec": "bundle exec cucumber -f pretty",
+      "ruby_rspec_exec": "bundle exec rspec",
 
+      "ruby_unit_folder": "test",
+      "ruby_cucumber_folder": "features",
+      "ruby_rspec_folder": "spec"
+    }
 
 Usage
 -----
