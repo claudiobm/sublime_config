@@ -70,7 +70,8 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 			{ "key": "has_prev_field", "operator": "equal", "operand": true }
 		]
 	},
-	{ "keys": ["escape"], "command": "hide_panel", "context":
+	{ "keys": ["escape"], "command": "hide_panel", "args": {"cancel": true},
+		"context":
 		[
 			{ "key": "panel_visible", "operator": "equal", "operand": true }
 		]
@@ -151,6 +152,7 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 
 	{ "keys": ["super+l"], "command": "expand_selection", "args": {"to": "line"} },
 	{ "keys": ["super+d"], "command": "find_under_expand" },
+	{ "keys": ["super+k", "super+d"], "command": "find_under_expand_skip" },
 	{ "keys": ["super+shift+space"], "command": "expand_selection", "args": {"to": "scope"} },
 	{ "keys": ["ctrl+shift+m"], "command": "expand_selection", "args": {"to": "brackets"} },
 	{ "keys": ["ctrl+m"], "command": "move_to", "args": {"to": "brackets"} },
@@ -181,7 +183,7 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 	{ "keys": ["super+i"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse":false} },
 	{ "keys": ["super+shift+i"], "command": "show_panel", "args": {"panel": "incremental_find", "reverse":true} },
 	{ "keys": ["super+f"], "command": "show_panel", "args": {"panel": "find"} },
-	{ "keys": ["ctrl+super+alt+f"], "command": "show_panel", "args": {"panel": "replace"} },
+	{ "keys": ["super+alt+f"], "command": "show_panel", "args": {"panel": "replace"} },
 	{ "keys": ["super+alt+e"], "command": "replace_next" },
 	{ "keys": ["super+g"], "command": "find_next" },
 	{ "keys": ["super+shift+g"], "command": "find_prev" },
@@ -228,6 +230,7 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 
 	{ "keys": ["f7"], "command": "build" },
 	{ "keys": ["super+b"], "command": "build" },
+	{ "keys": ["super+shift+b"], "command": "build", "args": {"variant": "Run"} },
 
 	{ "keys": ["ctrl+t"], "command": "transpose" },
 
@@ -239,7 +242,7 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 		[
 			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
 			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
-			{ "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t| |\\)|]|\\}|$)", "match_all": true },
+			{ "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t| |\\)|]|\\}|>|$)", "match_all": true },
 			{ "key": "preceding_text", "operator": "not_regex_contains", "operand": "[\"a-zA-Z0-9_]$", "match_all": true },
 			{ "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.double", "match_all": true }
 		]
@@ -271,7 +274,7 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 		[
 			{ "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
 			{ "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
-			{ "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t| |\\)|]|\\}|$)", "match_all": true },
+			{ "key": "following_text", "operator": "regex_contains", "operand": "^(?:\t| |\\)|]|\\}|>|$)", "match_all": true },
 			{ "key": "preceding_text", "operator": "not_regex_contains", "operand": "['a-zA-Z0-9_]$", "match_all": true },
 			{ "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.single", "match_all": true }
 		]
@@ -524,8 +527,8 @@ and don't need to be repeated here. Anything listed here will take precedence, h
 
 	{ "keys": ["super+alt+q"], "command": "wrap_lines" },
 
-	{ "keys": ["ctrl+alt+["], "command": "fold" },
-	{ "keys": ["ctrl+alt+]"], "command": "unfold" },
+	{ "keys": ["super+alt+["], "command": "fold" },
+	{ "keys": ["super+alt+]"], "command": "unfold" },
 	{ "keys": ["super+k", "super+1"], "command": "fold_by_level", "args": {"level": 1} },
 	{ "keys": ["super+k", "super+2"], "command": "fold_by_level", "args": {"level": 2} },
 	{ "keys": ["super+k", "super+3"], "command": "fold_by_level", "args": {"level": 3} },

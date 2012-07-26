@@ -1,0 +1,39 @@
+h1. TextileBuild (version 0.1.0)
+
+This is a Sublime Text plugin for building textile into html and open it in browser.
+
+h2. Installation
+
+Install using Package Control (Recommended)
+
+1. I guess most Sublime Text 2 users are using Sublime Package Control. If not, please install it from "here":http://wbond.net/sublime_packages/package_control
+2. Go to Preference > Package Control, and Choose "Install Package"
+3. Choose the package named "TextileBuild" to install it
+
+Install manually
+
+1. Download the repo
+2. Copy everything in the repo to a folder named "TextileBuild" under the package folder of SublimeText 2 (create it if it doesn't exist)
+
+h2. Usage
+
+This project forked from "SublimeMarkdownBuild":https://github.com/erinata/SublimeMarkdownBuild to support textile format.
+
+Press Ctrl+b to build the textile file to html and view it in the browser. It used Python-textile to build the html file but you do not need to have Python installed in order to use this plugin. This package utilizes the Python inside Sublime Text to get the job done.
+
+h2. Customization
+
+You can customize the behaviour of TextileBuild in that TextileBuild.sublime-settings file.
+
+# output_html - set it to true if you want to have an html file generated at the same folder of your textile file (default: false)
+# use_css - set it to false if you do not want to use css in the generated file (default: true)
+# charset - the charset in the meta tag of html, (default: "UTF-8")
+
+h2. Operating Systems
+
+This package works on Windows, OSX, and Linux
+
+h2. License
+
+Copyright (C) 2012 Tom Lam, Xkeeper. MIT License.
+  

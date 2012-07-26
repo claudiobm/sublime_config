@@ -1,15 +1,19 @@
 {
-	"auto_upgrade_last_run": 1340106925,
+	"auto_upgrade_last_run": 1343301588,
 	"installed_packages":
 	[
+		"4GL",
 		"CoffeeScript",
 		"CSV",
 		"FileTemplates",
+		"Markdown Preview",
 		"Package Control",
 		"Rails Related Files",
 		"RubyTest",
 		"SideBarEnhancements",
-		"Simple Rails Navigator"
+		"Simple Rails Navigator",
+		"Titanium API Search",
+		"Wiki"
 	],
 	"repository_channels":
 	[

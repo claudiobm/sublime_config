@@ -77,7 +77,7 @@ class StatusProcess(object):
         break
 
 def wrap_in_cd(path, command):
-  return 'cd ' + path.replace("\\", "/") + ' && ' + command
+  return 'cd ' + path.replace(" ", "\ ") + ' && ' + command
 
 class TestMethodMatcher(object):
   def __init__(self):
@@ -113,10 +113,6 @@ class TestMethodMatcher(object):
 
 
 class BaseRubyTask(sublime_plugin.TextCommand):
-  def __init__(self, args):
-    sublime_plugin.TextCommand.__init__(self, args)
-    self.test_panel = None
-
   def load_config(self):
     s = sublime.load_settings("RubyTest.sublime-settings")
     global RUBY_UNIT; RUBY_UNIT = s.get("ruby_unit_exec")
@@ -134,20 +130,18 @@ class BaseRubyTask(sublime_plugin.TextCommand):
 
     sublime.save_settings("RubyTest.last-run")
 
-  def get_test_panel(self):
-    if not self.test_panel:
-      self.test_panel = self.window().get_output_panel("tests")
-    return self.test_panel
-
   def window(self):
     return self.view.window()
 
   def show_tests_panel(self):
+    global output_view
+    if output_view is None:
+      output_view = self.window().get_output_panel("tests")
     self.clear_test_view()
     self.window().run_command("show_panel", {"panel": "output.tests"})
 
   def clear_test_view(self):
-    output_view = self.get_test_panel()
+    global output_view
     output_view.set_read_only(False)
     edit = output_view.begin_edit()
     output_view.erase(edit, sublime.Region(0, output_view.size()))
@@ -155,8 +149,8 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     output_view.set_read_only(True)
 
   def append_data(self, proc, data):
-    output_view = self.get_test_panel()
-    str = data.decode("utf-8")
+    global output_view
+    str = unicode(data, errors = "replace")
     str = str.replace('\r\n', '\n').replace('\r', '\n')
 
     selection_was_at_end = (len(output_view.sel()) == 1
@@ -184,7 +178,7 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     def possible_alternate_files(self): return []
     def run_all_tests_command(self): return None
     def run_from_project_root(self, partition_folder, command, options = ""):
-      folder_name, test_folder, file_name = os.path.join(self.folder_name, self.file_name).partition("/" + partition_folder)
+      folder_name, test_folder, file_name = os.path.join(self.folder_name, self.file_name).partition(partition_folder)
       return wrap_in_cd(folder_name, command + " " + partition_folder + file_name + options)
     def get_current_line_number(self, view):
       char_under_cursor = view.sel()[0].a
@@ -295,7 +289,9 @@ class RunLastRubyTest(BaseRubyTask):
 
 class ShowTestPanel(BaseRubyTask):
   def run(self, args):
-    output_view = self.get_test_panel()
+    global output_view
+    if output_view is None:
+      output_view = self.window().get_output_panel("tests")
     self.window().run_command("show_panel", {"panel": "output.tests"})
     self.window().focus_view(output_view)
 
