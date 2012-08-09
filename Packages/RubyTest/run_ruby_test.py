@@ -7,7 +7,7 @@ import time
 import sublime
 import sublime_plugin
 
-output_view = None
+test_pannels = {}
 
 class AsyncProcess(object):
   def __init__(self, cmd, listener):
@@ -122,6 +122,8 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     global RUBY_UNIT_FOLDER; RUBY_UNIT_FOLDER = s.get("ruby_unit_folder")
     global CUCUMBER_UNIT_FOLDER; CUCUMBER_UNIT_FOLDER = s.get("ruby_cucumber_folder")
     global RSPEC_UNIT_FOLDER; RSPEC_UNIT_FOLDER = s.get("ruby_rspec_folder")
+    if s.get("save_on_run"):
+      self.window().run_command("save_all")
 
   def save_test_run(self, ex, file_name):
     s = sublime.load_settings("RubyTest.last-run")
@@ -133,23 +135,30 @@ class BaseRubyTask(sublime_plugin.TextCommand):
   def window(self):
     return self.view.window()
 
-  def show_tests_panel(self):
-    global output_view
-    if output_view is None:
-      output_view = self.window().get_output_panel("tests")
-    self.clear_test_view()
+  def get_test_panel(self):
+    global test_pannels
+    window = self.window()
+    if window.id() not in test_pannels:
+      test_pannels[window.id()] = window.get_output_panel("tests")
+      test_pannels[window.id()].set_read_only(True)
+    return test_pannels[window.id()]
+
+  def show_tests_panel(self, project_root = None):
+    self.clear_test_view(project_root)
     self.window().run_command("show_panel", {"panel": "output.tests"})
 
-  def clear_test_view(self):
-    global output_view
+  def clear_test_view(self, project_root = None):
+    output_view = self.get_test_panel()
     output_view.set_read_only(False)
     edit = output_view.begin_edit()
     output_view.erase(edit, sublime.Region(0, output_view.size()))
     output_view.end_edit(edit)
     output_view.set_read_only(True)
-
+    output_view.settings().set("result_file_regex", "# ([A-Za-z:0-9_./ ]+rb):([0-9]+)")
+    output_view.settings().set("result_base_dir", project_root)
+    
   def append_data(self, proc, data):
-    global output_view
+    output_view = self.get_test_panel()
     str = unicode(data, errors = "replace")
     str = str.replace('\r\n', '\n').replace('\r', '\n')
 
@@ -177,6 +186,10 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     def verify_syntax_command(self): return None
     def possible_alternate_files(self): return []
     def run_all_tests_command(self): return None
+    def get_project_root(self): return None
+    def find_project_root(self, partition_folder):
+      project_root, test_folder, file_name = os.path.join(self.folder_name, self.file_name).partition(partition_folder)
+      return project_root
     def run_from_project_root(self, partition_folder, command, options = ""):
       folder_name, test_folder, file_name = os.path.join(self.folder_name, self.file_name).partition(partition_folder)
       return wrap_in_cd(folder_name, command + " " + partition_folder + file_name + options)
@@ -209,18 +222,21 @@ class BaseRubyTask(sublime_plugin.TextCommand):
         return
       return self.run_from_project_root(RUBY_UNIT_FOLDER, RUBY_UNIT + " -Itest", " -n " + test_name)
     def features(self): return super(BaseRubyTask.UnitFile, self).features() + ["run_test"]
+    def get_project_root(self): return self.find_project_root(RUBY_UNIT_FOLDER)
 
   class CucumberFile(BaseFile):
     def possible_alternate_files(self): return [self.file_name.replace(".feature", ".rb")]
     def run_all_tests_command(self): return self.run_from_project_root(CUCUMBER_UNIT_FOLDER, CUCUMBER_UNIT)
     def run_single_test_command(self, view): return self.run_from_project_root(CUCUMBER_UNIT_FOLDER, CUCUMBER_UNIT, " -l " + str(self.get_current_line_number(view)))
     def features(self): return ["run_test"]
+    def get_project_root(self): return self.find_project_root(CUCUMBER_UNIT_FOLDER)
 
   class RSpecFile(RubyFile):
     def possible_alternate_files(self): return [self.file_name.replace("_spec.rb", ".rb")]
     def run_all_tests_command(self): return self.run_from_project_root(RSPEC_UNIT_FOLDER, RSPEC_UNIT)
     def run_single_test_command(self, view): return self.run_from_project_root(RSPEC_UNIT_FOLDER, RSPEC_UNIT, " -l " + str(self.get_current_line_number(view)))
     def features(self): return super(BaseRubyTask.RSpecFile, self).features() + ["run_test"]
+    def get_project_root(self): return self.find_project_root(RSPEC_UNIT_FOLDER)
 
   class ErbFile(BaseFile):
     def verify_syntax_command(self): return wrap_in_cd(self.folder_name, ERB_EXEC +" -xT - " + self.file_name + " | " + RUBY_UNIT + " -c")
@@ -251,7 +267,7 @@ class RunSingleRubyTest(BaseRubyTask):
     command = file.run_single_test_command(self.view)
     if command:
       self.save_test_run(command, file.file_name)
-      self.show_tests_panel()
+      self.show_tests_panel(file.get_project_root())
       self.is_running = True
       self.proc = AsyncProcess(command, self)
       StatusProcess("Starting tests from file " + file.file_name, self)
@@ -265,7 +281,7 @@ class RunAllRubyTest(BaseRubyTask):
     file = self.file_type(view.file_name())
     command = file.run_all_tests_command()
     if command:
-      self.show_tests_panel()
+      self.show_tests_panel(file.get_project_root())
       self.save_test_run(command, file_name)
       self.is_running = True
       self.proc = AsyncProcess(command, self)
@@ -276,22 +292,21 @@ class RunAllRubyTest(BaseRubyTask):
 
 class RunLastRubyTest(BaseRubyTask):
   def load_last_run(self):
+    self.load_config()
     s = sublime.load_settings("RubyTest.last-run")
     global LAST_TEST_RUN; LAST_TEST_RUN = s.get("last_test_run")
     global LAST_TEST_FILE; LAST_TEST_FILE = s.get("last_test_file")
 
   def run(self, args):
     self.load_last_run()
-    self.show_tests_panel()
+    self.show_tests_panel(file.get_project_root())
     self.is_running = True
     self.proc = AsyncProcess(LAST_TEST_RUN, self)
     StatusProcess("Starting tests from file " + LAST_TEST_FILE, self)
 
 class ShowTestPanel(BaseRubyTask):
   def run(self, args):
-    global output_view
-    if output_view is None:
-      output_view = self.window().get_output_panel("tests")
+    output_view = self.get_test_panel()
     self.window().run_command("show_panel", {"panel": "output.tests"})
     self.window().focus_view(output_view)
 
