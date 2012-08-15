@@ -1,3 +1,0 @@
-SublimeMarkdownBuild 0.2.0
-
-- Forked from https://github.com/erinata/SublimeMarkdownBuild
