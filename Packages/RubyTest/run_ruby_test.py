@@ -28,20 +28,20 @@ class AsyncProcess(object):
         # TODO: Could refactor this to utilize metaprogramming but it might make it less readable?
         regex_pend = r'(^\s{4}(Given|When|Then|And|But).+?$\n\s{6}TODO.+?$)'
         regex_error = r'(^\s{4}(Given|When|Then|And|But).+?$\n\s{6}(expected.+|.*Error.*|.*error.*|.*NotFound.*|.*failed.*|.*Invalid.*)?$)'
-        
+
         pend_line_match = re.search(re.compile(regex_pend, re.M), data)
         error_line_match = re.search(re.compile(regex_error, re.M), data)
 
         if pend_line_match is not None:
           line_text = pend_line_match.group(0).split("\n      ")
-        
+
           data = re.compile(regex_pend, re.M).sub(line_text[0] + " #PEND" + "\n      " + line_text[1], data)
 
         if error_line_match is not None:
           line_text = error_line_match.group(0).split("\n      ")
-        
+
           data = re.compile(regex_error, re.M).sub(line_text[0] + " #ERROR" + "\n      " + line_text[1], data)
-        
+
         sublime.set_timeout(functools.partial(self.listener.append_data, self.proc, data), 0)
       else:
         self.proc.stdout.close()
@@ -122,6 +122,8 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     global RUBY_UNIT_FOLDER; RUBY_UNIT_FOLDER = s.get("ruby_unit_folder")
     global CUCUMBER_UNIT_FOLDER; CUCUMBER_UNIT_FOLDER = s.get("ruby_cucumber_folder")
     global RSPEC_UNIT_FOLDER; RSPEC_UNIT_FOLDER = s.get("ruby_rspec_folder")
+    global USE_SCRATCH; USE_SCRATCH = s.get("ruby_use_scratch")
+
     if s.get("save_on_run"):
       self.window().run_command("save_all")
 
@@ -135,19 +137,39 @@ class BaseRubyTask(sublime_plugin.TextCommand):
   def window(self):
     return self.view.window()
 
+  def reset_test_pannels(self):
+    global test_pannels
+    test_pannels = {}
+
+  def new_file_window(self):
+    global test_pannels
+    if not test_pannels:
+      test_pannels = self.view.window().new_file()
+      test_pannels.set_name("Test Results")
+      test_pannels.set_scratch(True)
+      test_pannels.set_syntax_file('Packages/Rails/Ruby on Rails.tmLanguage')
+    return test_pannels
+
   def get_test_panel(self):
     global test_pannels
     window = self.window()
-    if window.id() not in test_pannels:
-      test_pannels[window.id()] = window.get_output_panel("tests")
-      test_pannels[window.id()].set_read_only(True)
-    return test_pannels[window.id()]
+    if USE_SCRATCH:
+      return self.new_file_window()
+    else:
+      if window.id() not in test_pannels:
+        test_pannels[window.id()] = window.get_output_panel("tests")
+        test_pannels[window.id()].set_read_only(True)
+      return test_pannels[window.id()]
 
   def show_tests_panel(self, project_root = None):
     self.clear_test_view(project_root)
-    self.window().run_command("show_panel", {"panel": "output.tests"})
+    if not USE_SCRATCH:
+      self.window().run_command("show_panel", {"panel": "output.tests"})
 
   def clear_test_view(self, project_root = None):
+    if USE_SCRATCH:
+      self.reset_test_pannels()
+      return
     output_view = self.get_test_panel()
     output_view.set_read_only(False)
     edit = output_view.begin_edit()
@@ -156,9 +178,10 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     output_view.set_read_only(True)
     output_view.settings().set("result_file_regex", "# ([A-Za-z:0-9_./ ]+rb):([0-9]+)")
     output_view.settings().set("result_base_dir", project_root)
-    
+
   def append_data(self, proc, data):
     output_view = self.get_test_panel()
+
     str = unicode(data, errors = "replace")
     str = str.replace('\r\n', '\n').replace('\r', '\n')
 
@@ -299,6 +322,7 @@ class RunLastRubyTest(BaseRubyTask):
 
   def run(self, args):
     self.load_last_run()
+    file = self.file_type()
     self.show_tests_panel(file.get_project_root())
     self.is_running = True
     self.proc = AsyncProcess(LAST_TEST_RUN, self)

@@ -1,8 +1,9 @@
 {
-	"auto_upgrade_last_run": 1344517104,
+	"auto_upgrade_last_run": 1345037994,
 	"installed_packages":
 	[
 		"4GL",
+		"ApacheConf.tmLanguage",
 		"CoffeeScript",
 		"CSV",
 		"FileTemplates",
