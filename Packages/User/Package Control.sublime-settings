@@ -1,5 +1,5 @@
 {
-	"auto_upgrade_last_run": 1345037994,
+	"auto_upgrade_last_run": 1348147258,
 	"installed_packages":
 	[
 		"4GL",
@@ -9,6 +9,7 @@
 		"FileTemplates",
 		"Markdown Preview",
 		"Package Control",
+		"Rails Partial",
 		"Rails Related Files",
 		"RubyTest",
 		"SideBarEnhancements",
