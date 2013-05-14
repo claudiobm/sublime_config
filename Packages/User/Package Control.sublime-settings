@@ -1,19 +1,25 @@
 {
-	"auto_upgrade_last_run": 1348147258,
+	"auto_upgrade_last_run": null,
 	"installed_packages":
 	[
 		"4GL",
 		"ApacheConf.tmLanguage",
+		"Clipboard Manager",
 		"CoffeeScript",
 		"CSV",
+		"FileDiffs",
 		"FileTemplates",
+		"Jasmine",
 		"Markdown Preview",
 		"Package Control",
 		"Rails Partial",
 		"Rails Related Files",
+		"ruby-slim.tmbundle",
 		"RubyTest",
 		"SideBarEnhancements",
+		"SideBarGit",
 		"Simple Rails Navigator",
+		"Tag",
 		"Titanium API Search",
 		"Wiki"
 	],

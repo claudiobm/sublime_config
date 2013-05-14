@@ -1,126 +1,4 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><style>html { font-size: 100%; overflow-y: scroll; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-
-body{
-  color:#444;
-  font-family:Georgia, Palatino, 'Palatino Linotype', Times,
-              'Times New Roman', serif,
-              "Hiragino Sans GB", "STXihei", "微软雅黑";
-  font-size:12px;
-  line-height:1.5em;
-  background:#fefefe;
-  width: 45em;
-  margin: 10px auto;
-  padding: 1em;
-  outline: 1300px solid #FAFAFA;
-}
-
-a{ color: #0645ad; text-decoration:none;}
-a:visited{ color: #0b0080; }
-a:hover{ color: #06e; }
-a:active{ color:#faa700; }
-a:focus{ outline: thin dotted; }
-a:hover, a:active{ outline: 0; }
-
-span.backtick {
-  border:1px solid #EAEAEA;
-  border-radius:3px;
-  background:#F8F8F8;
-  padding:0 3px 0 3px;
-}
-
-::-moz-selection{background:rgba(255,255,0,0.3);color:#000}
-::selection{background:rgba(255,255,0,0.3);color:#000}
-
-a::-moz-selection{background:rgba(255,255,0,0.3);color:#0645ad}
-a::selection{background:rgba(255,255,0,0.3);color:#0645ad}
-
-p{
-margin:1em 0;
-}
-
-img{
-max-width:100%;
-}
-
-h1,h2,h3,h4,h5,h6{
-font-weight:normal;
-color:#111;
-line-height:1em;
-}
-h4,h5,h6{ font-weight: bold; }
-h1{ font-size:2.5em; }
-h2{ font-size:2em; border-bottom:1px solid silver; padding-bottom: 5px; }
-h3{ font-size:1.5em; }
-h4{ font-size:1.2em; }
-h5{ font-size:1em; }
-h6{ font-size:0.9em; }
-
-blockquote{
-color:#666666;
-margin:0;
-padding-left: 3em;
-border-left: 0.5em #EEE solid;
-}
-hr { display: block; height: 2px; border: 0; border-top: 1px solid #aaa;border-bottom: 1px solid #eee; margin: 1em 0; padding: 0; }
-
-
-pre , code, kbd, samp { 
-  color: #000; 
-  font-family: monospace; 
-  font-size: 0.88em; 
-  border-radius:3px;
-  background-color: #F8F8F8;
-  border: 1px solid #CCC; 
-}
-pre { white-space: pre; white-space: pre-wrap; word-wrap: break-word; padding: 5px;}
-pre code { border: 0px !important; }
-code { padding: 0 3px 0 3px; }
-
-b, strong { font-weight: bold; }
-
-dfn { font-style: italic; }
-
-ins { background: #ff9; color: #000; text-decoration: none; }
-
-mark { background: #ff0; color: #000; font-style: italic; font-weight: bold; }
-
-sub, sup { font-size: 75%; line-height: 0; position: relative; vertical-align: baseline; }
-sup { top: -0.5em; }
-sub { bottom: -0.25em; }
-
-ul, ol { margin: 1em 0; padding: 0 0 0 2em; }
-li p:last-child { margin:0 }
-dd { margin: 0 0 0 2em; }
-
-img { border: 0; -ms-interpolation-mode: bicubic; vertical-align: middle; }
-
-table { border-collapse: collapse; border-spacing: 0; }
-td { vertical-align: top; }
-
-@media only screen and (min-width: 480px) {
-body{font-size:14px;}
-}
-
-@media only screen and (min-width: 768px) {
-body{font-size:16px;}
-}
-
-@media print {
-  * { background: transparent !important; color: black !important; filter:none !important; -ms-filter: none !important; }
-  body{font-size:12pt; max-width:100%;}
-  a, a:visited { text-decoration: underline; }
-  hr { height: 1px; border:0; border-bottom:1px solid black; }
-  a[href]:after { content: " (" attr(href) ")"; }
-  abbr[title]:after { content: " (" attr(title) ")"; }
-  .ir a:after, a[href^="javascript:"]:after, a[href^="#"]:after { content: ""; }
-  pre, blockquote { border: 1px solid #999; padding-right: 1em; page-break-inside: avoid; }
-  tr, img { page-break-inside: avoid; }
-  img { max-width: 100% !important; }
-  @page :left { margin: 15mm 20mm 15mm 10mm; }
-  @page :right { margin: 15mm 10mm 15mm 20mm; }
-  p, h2, h3 { orphans: 3; widows: 3; }
-  h2, h3 { page-break-after: avoid; }
-}</style><script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script></head><body><h1 id="sample-markdown-cheat-sheet">Sample Markdown Cheat Sheet</h1>
+<h1 id="sample-markdown-cheat-sheet">Sample Markdown Cheat Sheet</h1>
 
 <p>This is a sample markdown file to help you write Markdown quickly :)</p>
 
@@ -130,7 +8,11 @@ body{font-size:16px;}
 
 <p>this is <em>italic</em> and this is <strong>bold</strong> .  another <em>italic</em> and another <strong>bold</strong></p>
 
-<p>this is <code>important</code> text.</p>
+<p>this is <code>important</code> text. and percentage signs : % and <code>%</code></p>
+
+<p>This is a paragraph with a footnote (builtin parser only). <sup class="footnote-ref" id="fnref-note-id"><a href="#fn-note-id">1</a></sup> </p>
+
+<p>Insert <code>[ toc ]</code> without spaces to generate a table of contents (builtin parser only).</p>
 
 <h2 id="indentation">Indentation</h2>
 
@@ -138,7 +20,7 @@ body{font-size:16px;}
   <p>Here is some indented text</p>
   
   <blockquote>
-    <p>event more indented</p>
+    <p>even more indented</p>
   </blockquote>
 </blockquote>
 
@@ -194,7 +76,7 @@ body{font-size:16px;}
 
 <h2 id="code">Code</h2>
 
-<p>Its quite easy to show code in markdown files.</p>
+<p>It's quite easy to show code in markdown files.</p>
 
 <p>Backticks can be used to <code>highlight</code> some words.</p>
 
@@ -205,7 +87,55 @@ body{font-size:16px;}
 &lt;/script&gt;
 </code></pre>
 
+<h2 id="github-flavored-markdown">GitHub Flavored Markdown</h2>
+
+<p>If you use the Github parser, you can use some of <a href="http://github.github.com/github-flavored-markdown/">Github Flavored Markdown</a> syntax :</p>
+
+<ul>
+<li>User/Project@SHA: revolunet/sublimetext-markdown-preview@7da61badeda468b5019869d11000307e07e07401</li>
+<li>User/Project#Issue: revolunet/sublimetext-markdown-preview#1</li>
+<li>User : @revolunet</li>
+</ul>
+
+<p>Some Python code :</p>
+
+<pre><code>import random
+
+class CardGame(object):
+    """ a sample python class """
+    NB_CARDS = 32
+    def __init__(self, cards=5):
+        self.cards = random.sample(range(self.NB_CARDS), 5)
+        print 'ready to play'
+</code></pre>
+
+<p>Some Javascript code :</p>
+
+<pre><code>var config = {
+    duration: 5,
+    comment: 'WTF'
+}
+// callbacks beauty un action
+async_call('/path/to/api', function(json) {
+    another_call(json, function(result2) {
+        another_another_call(result2, function(result3) {
+            another_another_another_call(result3, function(result4) {
+                alert('And if all went well, i got my result :)');
+            });
+        });
+    });
+})
+</code></pre>
+
 <h2 id="about">About</h2>
 
 <p>This plugin and this sample file is proudly brought to you by the <a href="http://revolunet.com">revolunet team</a></p>
-</body>
+
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn-note-id">
+<p>This is the text of the note.&nbsp;<a href="#fnref-note-id" class="footnoteBackLink" title="Jump back to footnote 1 in the text.">&#8617;</a></p>
+</li>
+</ol>
+</div>

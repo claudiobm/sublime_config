@@ -16,6 +16,11 @@
   { "keys": ["ctrl+u"], "command": "upper_case" },
   { "keys": ["ctrl+shift+u"], "command": "lower_case" },
   { "keys": ["ctrl+alt+u"], "command": "title_case" },
+
+  //Clipbord Manager
+  { "keys": ["super+alt+ctrl+v"], "command": "clipboard_manager_choose_and_paste" },
+  { "keys": ["super+ctrl+shift+v", "?"], "command": "clipboard_manager_show_registers" },
+  { "keys": ["super+ctrl+shift+v", "/"], "command": "clipboard_manager_show" },
   // code fold
   { "keys": ["ctrl+alt+1"], "command": "fold_by_level", "args": {"level": 1} },
   { "keys": ["ctrl+alt+2"], "command": "fold_by_level", "args": {"level": 2} },

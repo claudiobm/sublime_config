@@ -3,11 +3,11 @@
 	"detect_indentation": false,
 	"ensure_newline_at_eof_on_save": true,
 	"font_face": "Monaco",
-	"font_size": 12.0,
+	"font_size": 14.0,
 	"ignored_packages":
 	[
-		"Vintage",
 		"Simple Rails Navigator",
+		"Vintage",
 		"RubyTest"
 	],
 	"tab_size": 2,

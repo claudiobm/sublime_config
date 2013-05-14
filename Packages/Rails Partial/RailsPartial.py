@@ -76,7 +76,7 @@ class RailsPartialCommand(sublime_plugin.TextCommand):
 		# Create the file and paste the data
 		if not os.path.exists(partial_file_with_path):
 			with open(partial_file_with_path, 'w') as f:
-				f.write(textwrap.dedent(partial_code))
+				f.write(textwrap.dedent(partial_code.encode('utf-8')))
 
 			#Open the file?
 			if (self.open_partial == True):
@@ -87,6 +87,7 @@ class RailsPartialCommand(sublime_plugin.TextCommand):
 				partial_name = partial_path + '/' + partial_name
 
 			self.insert_render_code(partial_name, source)
+
 		else:
 			self.display_message("The partial you were trying to create already exists. To help protect you, we won't let you overwrite that partial. Please delete the partial and everything will be fine!")
 
@@ -96,9 +97,11 @@ class RailsPartialCommand(sublime_plugin.TextCommand):
 		# Handle different file types
 		if source.endswith(".haml"):
 			code_replace = "= render '{0}'"
+		elif source.endswith( (".slim") ):
+			code_replace = "== render '{0}'"
 		elif source.endswith( (".erb",".html") ):		# .html added just in case.
 			code_replace = "<%= render '{0}' %>"
-		elif source.endswith( (".php") ):				# Only basic support, php isn't the real goal as of now. Feel free to expand!
+		elif source.endswith( (".php") ):			# Only basic support, php isn't the real goal as of now. Feel free to expand!
 			code_replace = "<?php include('{0}'); ?>"	# :)
 		elif source.endswith( (".css") ):
 			code_replace = "@import url('{0}');"
