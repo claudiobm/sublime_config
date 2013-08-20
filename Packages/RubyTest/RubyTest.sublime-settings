@@ -17,6 +17,7 @@
 
   "check_for_rbenv": false,
   "check_for_rvm": false,
+  "check_for_bundler": false,
 
   "ruby_use_scratch" : false,
   "save_on_run": false,
@@ -25,5 +26,9 @@
   "hide_panel": false,
 
   "before_callback": "",
-  "after_callback": ""
+  "after_callback": "",
+
+  "theme": "Packages/RubyTest/TestConsole.hidden-tmTheme",
+  "syntax": "Packages/RubyTest/TestConsole.tmLanguage"
+
 }

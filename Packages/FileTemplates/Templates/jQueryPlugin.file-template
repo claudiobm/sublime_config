@@ -10,6 +10,6 @@
 
 	<!-- Optional: Add as much arguments as you need, they will be asked in the order specified -->
 	<arguments>
-		<name>Name:</name>
+		<name>Name (without extension):</name>
 	</arguments>
 </template>

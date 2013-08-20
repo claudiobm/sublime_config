@@ -3,6 +3,6 @@
 	<filename>$name.file-template</filename>
 	<path>Templates/</path>
 	<arguments>
-		<name>Name:</name>
+		<name>Name (without extension):</name>
 	</arguments>
 </template>

@@ -118,10 +118,8 @@ Settings:
 
 Bundler support:
 ----------------
-First be sure that you have your copy of `RubyTest.sublime-settings` placed in User folder (refer to Settings above) and replace each prefix each command with "bundle exec". ex:
 
-    "run_rspec_command": "bundle exec rspec {relative_path}"
-
+There is a bundler autodetect feature - based on presence of `Gemfile` in projects root directory. Use `"check_for_bundler": true` settings for it.
 
 Spin support:
 -------------
@@ -147,7 +145,15 @@ First be sure that you have your copy of `RubyTest.sublime-settings` placed in U
 
       "ruby_use_scratch" : false,
       "save_on_run": false,
-      "ignored_directories": [".git", "vendor", "tmp"]
+      "ignored_directories": [".git", "vendor", "tmp"],
+
+      "hide_panel": false,
+
+      "before_callback": "",
+      "after_callback": "",
+
+      "theme": "Packages/RubyTest/TestConsole.hidden-tmTheme",
+      "syntax": "Packages/RubyTest/TestConsole.tmLanguage"
     }
 
 Zeus support:

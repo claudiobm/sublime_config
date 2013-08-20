@@ -12,9 +12,11 @@ class ShowInPanel:
   def display_results(self):
     self.panel = self.window.get_output_panel("exec")
     self.window.run_command("show_panel", {"panel": "output.exec"})
+    self.panel.settings().set("color_scheme", THEME)
+    self.panel.set_syntax_file(SYNTAX)
     if HIDE_PANEL:
       self.window.run_command("hide_panel")
-    self.panel.settings().set("color_scheme", "Packages/RubyTest/TestConsole.hidden-tmTheme")
+    self.panel.settings().set("color_scheme", THEME)
 
 
 class ShowInScratch:
@@ -30,8 +32,8 @@ class ShowInScratch:
     self.view.set_scratch(True)
     self.view.set_read_only(False)
 
-    self.view.settings().set("syntax", "Packages/RubyTest/TestConsole.tmLanguage")
-    self.view.settings().set("color_scheme", "Packages/RubyTest/TestConsole.hidden-tmTheme")
+    self.view.set_syntax_file(SYNTAX)
+    self.view.settings().set("color_scheme", THEME)
     self.view.set_read_only(True)
     self.poll_copy()
     self.append('\n\n')
@@ -100,7 +102,7 @@ class TestMethodMatcher(object):
       if not match_obj:
         return None
       test_name = match_obj.group(1)[::-1]
-      return "%s%s%s" % ("/", test_name.replace("should", "").replace("\"", "").strip(), "/")
+      return "%s%s%s" % ("/", test_name.replace("should", "").replace("\"", "").replace("'", "").strip(), "/")
 
 
 class RubyTestSettings:
@@ -126,13 +128,45 @@ class BaseRubyTask(sublime_plugin.TextCommand):
     global AFTER_CALLBACK; AFTER_CALLBACK = s.get("after_callback")
     global COMMAND_PREFIX; COMMAND_PREFIX = False
     global SAVE_ON_RUN; SAVE_ON_RUN = s.get("save_on_run")
+    global SYNTAX; SYNTAX = s.get('syntax')
+    global THEME; THEME = s.get('theme')
 
+
+    rbenv = s.get("check_for_rbenv")
+    rvm = s.get("check_for_rvm")
+    bundler = s.get("check_for_bundler")
+    if rbenv or rvm: self.rbenv_or_rvm(s, rbenv, rvm)
+    if bundler: self.bundler_support()
+
+  def rbenv_or_rvm(self, s, rbenv, rvm):
+    which = os.popen('which rbenv').read().split('\n')[0]
+    brew = '/usr/local/bin/rbenv'
     rbenv_cmd = os.path.expanduser('~/.rbenv/bin/rbenv')
     rvm_cmd = os.path.expanduser('~/.rvm/bin/rvm-auto-ruby')
-    if s.get("check_for_rbenv") and self.is_executable(rbenv_cmd):
+
+    if os.path.isfile(brew): rbenv_cmd = brew
+    elif os.path.isfile(which): rbenv_cmd = which
+
+    global COMMAND_PREFIX
+    if rbenv and self.is_executable(rbenv_cmd):
       COMMAND_PREFIX = rbenv_cmd + ' exec'
-    elif s.get("check_for_rvm") and self.is_executable(rvm_cmd):
+    elif rvm and self.is_executable(rvm_cmd):
       COMMAND_PREFIX = rvm_cmd + ' -S'
+
+  def bundler_support(self):
+    project_root = self.file_type(None, False).find_project_root()
+    if not os.path.isdir(project_root):
+      s = sublime.load_settings("RubyTest.last-run")
+      project_root = s.get("last_test_working_dir")
+
+    gemfile_path = project_root + '/Gemfile'
+
+    global COMMAND_PREFIX
+    if not COMMAND_PREFIX:
+      COMMAND_PREFIX = ""
+
+    if os.path.isfile(gemfile_path):
+      COMMAND_PREFIX =  COMMAND_PREFIX + " bundle exec "
 
   def save_all(self):
     if SAVE_ON_RUN:
@@ -260,8 +294,9 @@ class BaseRubyTask(sublime_plugin.TextCommand):
         return re.sub(os.sep + '.+', "", file_name.replace(folder,"")[1:])
     return default_partition_folder
 
-  def file_type(self, file_name = None):
-    self.load_config()
+  def file_type(self, file_name = None, load_config = True):
+    if load_config:
+      self.load_config()
     file_name = file_name or self.view.file_name()
     if not file_name: return BaseRubyTask.AnonymousFile()
     if re.search('\w+\_test.rb', file_name):
